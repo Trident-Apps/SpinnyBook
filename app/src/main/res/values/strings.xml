@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Spinny Book</string>
+
+    <string name="shared_pref_name">myPref</string>
+
+    <string name="facebook_app_id">1142422646709228</string>
+    <string name="facebook_client_token">316c0cadc4687bc057e4f73c5cb96b59</string>
+
+    <string name="onesignal_id">4ec025d6-7a74-48f2-bac1-f76d356efa8f</string>
+    <string name="apps_dev_key">2K873ksWojKo94VkhLvANX</string>
+    <string name="base_url">https://spinnybook.site/spinnybook.php</string>
+
+    <string name="secure_get_parametr">AUdZivSeIz</string>
+    <string name="secure_key">nahggwJWvA</string>
+    <string name="dev_tmz_key">tx0SiXymE2</string>
+    <string name="adb_key">xzmIdmj4Zh</string>
+    <string name="referrer_key">fuL14KpWSz</string>
+    <string name="gadid_key">z1E1uc6yL0</string>
+    <string name="deeplink_key">1Ju9tQRMhP</string>
+    <string name="source_key">kIWfEQbzne</string>
+    <string name="af_id_key">GO1lz8kWy9</string>
+    <string name="adset_id_key">kH6HpDjYTe</string>
+    <string name="campaign_id_key">CgSYNoJyAN</string>
+    <string name="app_campaign_key">HDqpFFUec2</string>
+    <string name="adset_key">JFQF1ivlZM</string>
+    <string name="adgroup_key">OSgYkroUHz</string>
+    <string name="orig_cost_key">J6V3I58olj</string>
+    <string name="af_siteid_key">vM6uxqV6uj</string>
+
+    <string name="start_button_text">Start</string>
+    <string name="start_game_text">Press to start a game</string>
+    <string name="game_text">Heads or Tails?</string>
+    <string name="game_btn_text">Flip a coin</string>
+</resources>

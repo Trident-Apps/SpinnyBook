@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.App.StartingScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@android:color/darker_gray</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_ic</item>
+        <item name="postSplashScreenTheme">@style/Theme.SpinnyBook</item>
+    </style>
+</resources>
