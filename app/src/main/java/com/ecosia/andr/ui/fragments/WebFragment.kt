@@ -22,6 +22,7 @@ class WebFragment : Fragment() {
     private lateinit var webView: WebView
     private var isRedirected: Boolean = true
     private var messageAb: ValueCallback<Array<Uri?>>? = null
+    private var isUrlSaved: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +33,6 @@ class WebFragment : Fragment() {
 
         webView = binding.webView
         webView.loadUrl(arguments?.getString(ARGUMENTS_KEY) ?: "url not passed")
-        Log.d("customTagWeb", arguments?.getString("url").toString())
         webView.webViewClient = LocalClient()
         webView.settings.userAgentString = System.getProperty(USER_AGENT)
         webView.settings.javaScriptEnabled = true
@@ -85,27 +85,15 @@ class WebFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-//            object : OnBackPressedCallback(true) {
-//                override fun handleOnBackPressed() {
-//                    if (webView.canGoBack()) {
-//                        webView.goBack()
-//                    } else {
-//                        isEnabled = false
-//                    }
-//                }
-//            })
 
-        webView.canGoBack()
-        webView.setOnKeyListener(View.OnKeyListener { view, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_BACK
-                && event.action == MotionEvent.ACTION_UP && webView.canGoBack()
-            ) {
-                webView.goBack()
-                return@OnKeyListener true
-            }
-            false
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (webView.canGoBack()) {
+                        webView.goBack()
+                    }
+                }
+            })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -158,17 +146,20 @@ class WebFragment : Fragment() {
 
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
+            CookieManager.getInstance().flush()
+            val sharedPref = requireActivity().getSharedPreferences(
+                requireActivity().getString(R.string.shared_pref_name),
+                Context.MODE_PRIVATE
+            )
             if (!isRedirected) {
                 url?.let { url ->
                     if (url == BASE_URL) {
                         findNavController().navigate(R.id.startGameFragment)
                     } else {
-                        val sharedPref = requireActivity().getSharedPreferences(
-                            requireActivity().getString(R.string.shared_pref_name),
-                            Context.MODE_PRIVATE
-                        )
-                        sharedPref.edit().putString("savedUrl", url).apply()
-                        Log.d("customTagWeb", "saved url is $url ")
+                        if (!isUrlSaved) {
+                            sharedPref.edit().putString("savedUrl", url).apply()
+                            isUrlSaved = true
+                        }
                     }
                 }
             }

@@ -1,9 +1,7 @@
 package com.ecosia.andr.ui.fragments
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +21,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoadingFragment : Fragment() {
-    private val TAG = "customTagLoading"
     private lateinit var binding: LoadingFragmentLayoutBinding
     private lateinit var viewModel: BookVM
     private val checker = Checker()
@@ -50,7 +47,6 @@ class LoadingFragment : Fragment() {
             })
 
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "View created")
         val sharedPref = requireActivity().getSharedPreferences(
             requireActivity().getString(R.string.shared_pref_name),
             Context.MODE_PRIVATE
@@ -58,31 +54,23 @@ class LoadingFragment : Fragment() {
 
         val viewModelFactory = BookVMFactory(requireActivity().application)
         viewModel = ViewModelProvider(this, viewModelFactory)[BookVM::class.java]
-        Log.d(TAG, "Factory created")
 
-        val smth: Boolean = false
-//        if (checker.isDeviceSecured(requireActivity()))
-        if (smth) {
+
+        if (checker.isDeviceSecured(requireActivity())) {
             findNavController().navigate(R.id.startGameFragment)
-            Log.d(TAG, "passed checker")
         } else {
             savedUrl = sharedPref.getString("savedUrl", "null").toString()
-            Log.d(TAG, "saved url is $savedUrl")
             if (savedUrl == "null") {
-                Log.d(TAG, "checked prefs")
                 lifecycleScope.launch(Dispatchers.IO) {
                     viewModel.getDeepLink(requireActivity())
-                    Log.d(TAG, "started deep")
                 }
                 lifecycleScope.launch(Dispatchers.Main) {
                     viewModel.urlLiveData.observe(viewLifecycleOwner) {
                         startWeb(it)
-                        Log.d(TAG, "started web from new $it")
                     }
                 }
             } else {
                 startWeb(savedUrl)
-                Log.d(TAG, "started web from prefs $savedUrl")
             }
         }
 
