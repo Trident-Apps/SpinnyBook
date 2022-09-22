@@ -55,7 +55,10 @@ class BookVM(application: Application) : AndroidViewModel(application) {
                     }
                 }
 
-                override fun onConversionDataFail(data: String?) {}
+                override fun onConversionDataFail(data: String?) {
+                    urlLiveData.postValue(builder.createUrl("null", null, activity))
+                    sender.sendTag("null", null)
+                }
 
                 override fun onAppOpenAttribution(data: MutableMap<String, String>?) {}
 
